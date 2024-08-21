@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <script src="/static/js/jquery-3.7.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+</head>
+<script>
+    $(document).ready( () => {
+        getSincardList();
+    })
+    
+    function getSincardList(){
+        $.ajax({
+            url : '/getSincardList',
+            method : 'post',
+            contentType : "application/json; charset=UTF-8",
+            data : null,
+            success : function(data){
+                $("#tbd").html('');
+                for(let i = 0; i < data.length; i++){
+                    $("#tbd").append(`
+                        <tr>
+                            <th>${data[i].index}</th>
+                            <td>${data[i].title}</td>
+                            <td>${data[i].price}</td>
+                            <td>${data[i].inday}</td>
+                            <td>${data[i].comment}</td>
+                        </tr>
+                    `)
+                }
+            }
+        })
+    }
+</script>
+<body>
+    <div class="container">
+        <h2>MENU</h2>
+    </div>
+    <div class="d-flex justify-content-center">
+        <h2>MyCard List</h2>
+    </div>
+    <button type="button" class="btn btn-info" onclick="location.href='/addSincardData'">신용카드내역추가</button>
+    <div class="d-flex justify-content-center">
+        <h2>현재 사용량 : [[${totalprice}]]</h2>
+    </div>
+    <div class="d-flex justify-content-center">
+        <table class="table table-striped table-dark">
+            <thead>
+                <tr>
+                    <th>No</th>
+                    <th>사용내용</th>
+                    <th>금액</th>
+                    <th>날짜</th>
+                    <th>비고</th>
+                </tr>
+            </thead>
+            <tbody name="tbd" id="tbd">
+
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>

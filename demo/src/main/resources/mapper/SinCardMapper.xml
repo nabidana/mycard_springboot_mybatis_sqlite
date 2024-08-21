@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Mapper.SinCardMapper">
+    <select id="selectSinCardLists" resultType="com.example.demo.Domain.SinCard" parameterType="com.example.demo.Domain.CommonSearch">
+        SELECT *
+        FROM Sincard
+        WHERE 1=1
+    </select>
+
+    <select id="getTotalPrice" resultType="Integer">
+        SELECT IFNULL(SUM(price), 0)
+        FROM Sincard
+    </select>
+
+    <insert id="insertSinCard" parameterType="com.example.demo.Domain.SinCard">
+        INSERT INTO Sincard(
+            title
+            , price
+            , inday
+            <if test="comment != null">
+            , comment
+            </if>
+        ) VALUES (
+            #{title}
+            , #{price}
+            , #{inday}
+            <if test="comment != null">
+            , #{comment}
+            </if>
+        )
+    </insert>
+</mapper>
