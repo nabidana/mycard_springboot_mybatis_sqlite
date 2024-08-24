@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.demo.Mapper.SinCardMapper">
+    <select id="selectSinCardLists" resultType="SinCard" parameterType="CommonSearch">
+        select a.idx
+        , a.title
+        , a.price
+        , a.contents
+        , a.inday
+        , b.title as category
+        from sincard a
+        left join category b
+        on a.category_idx = b.idx
+        where 1=1
+        order by idx desc
+    </select>
+
+    <select id="getTotalPrice" resultType="Integer">
+        --coalesce : NVL
+        select coalesce( sum(price), 0)
+        from sincard;
+    </select>
+
+    <insert id="insertSinCard" parameterType="SinCard">
+        insert into sincard(
+            title
+            , price
+            , inday
+            <if test="contents != null">
+            , contents
+            </if>
+            <if test="category != null">
+            , category_idx
+            </if>
+        ) values(
+            #{title}
+            , #{price}
+            , #{inday}
+            <if test="contents != null">
+            , #{contents}
+            </if>
+            <if test="category != null">
+            , (select idx from category where title = #{category})
+            </if>
+        )
+    </insert>
+</mapper>

@@ -5,10 +5,8 @@ import lombok.EqualsAndHashCode;
 
 @Data
 @EqualsAndHashCode(callSuper = true)
-public class CommonSearch extends CommonDomain{
-    //private int idx;
-    //private String title;
+public class BupCard extends CommonDomain{
     private int price;
-    private String startday;
-    private String endday;
+    private String inday;
+    private String category;
 }

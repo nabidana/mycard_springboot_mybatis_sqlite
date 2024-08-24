@@ -3,22 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>신용카드 내역 추가</title>
+    <title>Menu</title>
     <script src="/static/js/jquery-3.7.1.min.js"></script>
     <script src="/static/js/bootstrap.js"></script>
     <link rel="stylesheet" href="/static/css/bootstrap.css">
 </head>
 <script>
     function addingData(){
-        if( $("#price").val() == null) return;
+        if( $("#title").val() == null) return;
         $.ajax({
-            url : '/addSinCard',
+            url : '/addCategory',
             method : 'post',
             contentType : "application/json; charset=UTF-8",
             data : JSON.stringify({
-                price : $("#price").val(),
                 title : $("#title").val(),
-                comment : $("#contents").val(),
+                contents : $("#contents").val(),
             }),
             success : function(data){
                 if(data == 'OK'){
@@ -28,15 +27,13 @@
             }
         })
     }
-
 </script>
 <body>
     <div class="container">
         <h2>신용카드 내역 추가</h2>
-        <form id="sincard" name="sincard">
-            가격 : <input type="text" name="price" id="price"><br>
-            내역 : <input type="text" name="title" id="title"><br>
-            비고 : <input type="text" name="contents" id="contents"><br>
+        <form id="category" name="category">
+            카테고리명 : <input type="text" name="title" id="price"><br>
+            카테고리설명 : <input type="text" name="contents" id="title"><br>
         </form>
         <button type="button" class="btn btn-primary" onclick="addingData()">추가하기</button>
         <button type="button" class="btn btn-success" onclick="location.href='/'">뒤로</button>

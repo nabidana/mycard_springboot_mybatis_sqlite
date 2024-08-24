@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 
 import com.example.demo.Service.SinCardService;
 
+
 @Controller
 public class IndexController {
 
@@ -24,4 +25,15 @@ public class IndexController {
     public String addSincardData(){
         return "addSincardData";
     }
+
+    @GetMapping("/categoryList")
+    public String categoryList(){
+        return "categoryList";
+    }
+
+    @GetMapping("/addCategory")
+    public String addCategory(){
+        return "addCategory";
+    }
+    
 }
