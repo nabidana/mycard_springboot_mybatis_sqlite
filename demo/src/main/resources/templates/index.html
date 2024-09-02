@@ -26,17 +26,46 @@
                         <tr>
                             <th>
                                 <input type="hidden" value="${data[i].idx}"/>
-                                ${i}
+                                ${i+1}
                             </th>
                             <td>${data[i].title}</td>
                             <td>${data[i].price}</td>
                             <td>${data[i].inday}</td>
                             <td>${data[i].contents}</td>
+                            <td>
+                                <button type="button" class="btn btn-danger" onclick="delcard(${data[i].idx})">삭제</button>
+                                <button type="button" class="btn btn-success" onclick="updatecard(${data[i].idx})">수정</button>
+                            </td>
                         </tr>
                     `)
                 }
             }
-        })
+        });
+    }
+
+    function delcard(index){
+        let trueorfalse = confirm('삭제하시겠습니까?');
+        if(trueorfalse){
+            $.ajax({
+                url : '/delSincard',
+                method : 'post',
+                contentType : "application/json; charset=UTF-8",
+                data : JSON.stringify({
+                    idx : index
+                }),
+                success : function(data){
+                    if(data == 'OK'){
+                        alert('삭제 성공');
+                        getSincardList();
+                    }else{
+                        alert('삭제 실패');
+                    }
+                },
+                error : function(err){
+                    alert("에러\r\n"+err);
+                }
+            })
+        }
     }
 </script>
 <body>
@@ -48,8 +77,15 @@
     </div>
     <button type="button" class="btn btn-info" onclick="location.href='/addSincardData'">신용카드내역추가</button>
     <button type="button" class="btn btn-outline-info" onclick="location.href='/categoryList'">카테고리관리</button>
+    <button type="button" class="btn btn-outline-info" onclick="location.href='/subcategoryList'">서브카테고리관리</button>
     <div class="d-flex justify-content-center">
         <h2>현재 사용량 : [[${totalprice}]]</h2>
+    </div>
+    <div class="d-flex justify-content-center">
+        <select name="monthsel" id="monthsel">
+            <option value="">---</option>
+            <option th:each="mon : ${monthlist}" th:value="${mon}" th:text="${mon}+월"></option>
+        </select>
     </div>
     <div class="d-flex justify-content-center">
         <table class="table table-striped table-dark">
@@ -60,6 +96,7 @@
                     <th>금액</th>
                     <th>날짜</th>
                     <th>비고</th>
+                    <th></th>
                 </tr>
             </thead>
             <tbody name="tbd" id="tbd">

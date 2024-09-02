@@ -8,17 +8,22 @@
         , a.contents
         , a.inday
         , b.title as category
+        , c.title as subcategory
         from sincard a
         left join category b
         on a.category_idx = b.idx
+        left join subcategory c
+        on a.subcategory_idx = c.idx
         where 1=1
+        and card_stat = '0'
         order by idx desc
     </select>
 
     <select id="getTotalPrice" resultType="Integer">
         --coalesce : NVL
         select coalesce( sum(price), 0)
-        from sincard;
+        from sincard
+        where card_stat = '0';
     </select>
 
     <insert id="insertSinCard" parameterType="SinCard">
@@ -32,6 +37,10 @@
             <if test="category != null">
             , category_idx
             </if>
+            <if test="subcategory != null">
+            , subcategory_idx
+            </if>
+            , card_stat
         ) values(
             #{title}
             , #{price}
@@ -42,6 +51,26 @@
             <if test="category != null">
             , (select idx from category where title = #{category})
             </if>
+            <if test="subcategory != null">
+            , (select idx from category where title = #{subcategory})
+            </if>
+            , '0'
         )
     </insert>
+
+    <update id="delSincard" parameterType="SinCard">
+        update sincard
+        set card_stat = '1'
+        where 1=1
+            and idx = #{idx}
+    </update>
+
+    <select id="getMonthList" resultType="string">
+        select a.month
+        from(
+            select extract(month from to_date(inday, 'yyyy-mm-dd')) as month
+            from sincard
+        ) as a
+        group by a.month
+    </select>
 </mapper>

@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.demo.Mapper.CategoryMapper">
+<mapper namespace="com.example.demo.Mapper.SubCategoryMapper">
     <select id="selectCategoryList" parameterType="CommonSearch" resultType="Category">
         select *
-        from category
+        from subcategory
     </select>
 
-    <insert id="addCategory" parameterType="Category">
-        insert into category(
+    <insert id="addSubCategory" parameterType="Category">
+        insert into subcategory(
             title
             <if test="contents != null">
             , contents
@@ -20,8 +20,8 @@
         )
     </insert>
 
-    <update id="delCategory" parameterType="Category">
-        delete from category
+    <update id="delSubCategory" parameterType="Category">
+        delete from subcategory
         where 1=1
             and idx = #{idx}
     </update>

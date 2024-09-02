@@ -28,11 +28,20 @@ public class SinCardService {
         return mapper.getTotalPrice();
     }
 
-    public void addSinCard(SinCard sinCard) {
+    public int addSinCard(SinCard sinCard) {
         Date now = new Date();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
         String today = simpleDateFormat.format(now);
         sinCard.setInday(today);
-        mapper.insertSinCard(sinCard);
+        sinCard.setCard_stat("0");
+        return mapper.insertSinCard(sinCard);
+    }
+
+    public int delsincard(SinCard sinCard) {
+        return mapper.delSincard(sinCard);
+    }
+
+    public List<String> getMonthList() {
+        return mapper.getMonthList();
     }
 }

@@ -1,19 +1,17 @@
 package com.example.demo.Mapper;
 
-import java.util.List;
-
 import org.apache.ibatis.annotations.Mapper;
-
+import java.util.List;
 import com.example.demo.Domain.Category;
 import com.example.demo.Domain.CommonSearch;
 
 @Mapper
-public interface CategoryMapper {
-
+public interface SubCategoryMapper {
+    
     List<Category> selectCategoryList(CommonSearch commonSearch);
 
-    int addCategory(Category category);
+    int addSubCategory(Category category);
 
-    int delCategory(Category category);
-    
+    int delSubCategory(Category category);
+
 }

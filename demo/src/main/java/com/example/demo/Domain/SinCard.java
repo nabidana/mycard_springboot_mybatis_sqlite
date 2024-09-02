@@ -12,4 +12,6 @@ public class SinCard extends CommonDomain{
     private String inday;
     //private String contents;
     private String category;
+    private String subcategory;
+    private String card_stat;
 }

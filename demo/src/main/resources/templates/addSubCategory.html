@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Menu</title>
+    <title>서브카테고리추가</title>
     <script src="/static/js/jquery-3.7.1.min.js"></script>
     <script src="/static/js/bootstrap.js"></script>
     <link rel="stylesheet" href="/static/css/bootstrap.css">
@@ -12,7 +12,7 @@
     function addingData(){
         if( $("#title").val() == null) return;
         $.ajax({
-            url : '/addCategory',
+            url : '/addSubCategory',
             method : 'post',
             contentType : "application/json; charset=UTF-8",
             data : JSON.stringify({
@@ -20,9 +20,10 @@
                 contents : $("#contents").val(),
             }),
             success : function(data){
+                console.log(data);
                 if(data == 'OK'){
                     alert('성공');
-                    window.location.href ='/categoryList';
+                    window.location.href ='/subcategoryList';
                 }
             }
         })
@@ -30,7 +31,7 @@
 </script>
 <body>
     <div class="container">
-        <h2>카테고리 추가</h2>
+        <h2>서브카테고리 추가</h2>
         <form id="category" name="category">
             카테고리명 : <input type="text" name="title" id="title"><br>
             카테고리설명 : <input type="text" name="contents" id="contents"><br>

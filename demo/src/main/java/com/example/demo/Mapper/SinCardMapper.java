@@ -13,5 +13,9 @@ public interface SinCardMapper {
 
     int getTotalPrice();
 
-    void insertSinCard(SinCard sinCard);
+    int insertSinCard(SinCard sinCard);
+
+    int delSincard(SinCard sinCard);
+
+    List<String> getMonthList();
 }
