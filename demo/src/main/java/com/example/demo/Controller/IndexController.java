@@ -6,8 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.example.demo.Domain.Category;
+import com.example.demo.Domain.SinCard;
 import com.example.demo.Service.CategoryService;
 import com.example.demo.Service.SinCardService;
 
@@ -56,5 +58,22 @@ public class IndexController {
     @GetMapping("/addSubCategory")
     public String addSubCategory(){
         return "addSubCategory";
+    }
+
+    @GetMapping("/updateSincardData")
+    public String updateSincardData(Model model, @RequestParam String idx) throws Exception{
+        try {
+            int index = Integer.parseInt(idx);
+            SinCard sinCard = sinCardService.getOneSinCard(index);
+            model.addAttribute("sinCard", sinCard);
+            List<Category> categoryList = categoryService.getList(null);
+            List<Category> subCategoryList = categoryService.getSubList(null);
+            model.addAttribute("categoryList", categoryList);
+            model.addAttribute("subCategoryList", subCategoryList);
+        } catch (Exception e) {
+            
+            return "redirect:/";
+        }
+        return "updateSincardData";
     }
 }

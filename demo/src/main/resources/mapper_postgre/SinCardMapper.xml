@@ -73,4 +73,22 @@
         ) as a
         group by a.month
     </select>
+
+    <select id="getOneSinCard" resultType="SinCard">
+        select a.idx
+        , a.title
+        , a.price
+        , a.contents
+        , a.inday
+        , b.title as category
+        , c.title as subcategory
+        from sincard a
+        left join category b
+        on a.category_idx = b.idx
+        left join subcategory c
+        on a.subcategory_idx = c.idx
+        where 1=1
+        and card_stat = '0'
+        and a.idx = #{idx}
+    </select>
 </mapper>

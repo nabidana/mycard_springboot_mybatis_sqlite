@@ -18,4 +18,6 @@ public interface SinCardMapper {
     int delSincard(SinCard sinCard);
 
     List<String> getMonthList();
+
+    SinCard getOneSinCard(int index);
 }

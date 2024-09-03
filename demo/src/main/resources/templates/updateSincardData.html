@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>신용카드 내역 수정</title>
+    <script src="/static/js/jquery-3.7.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+</head>
+<script>
+
+    function addingData(){
+        if( $("#price").val() == null) return;
+        $.ajax({
+            url : '/updateSinCard',
+            method : 'post',
+            contentType : "application/json; charset=UTF-8",
+            data : JSON.stringify({
+                price : $("#price").val(),
+                title : $("#title").val(),
+                contents : $("#contents").val(),
+                category : $("#category option:selected").val(),
+                subcategory : $("#subcategory option:selected").val(),
+            }),
+            success : function(data){
+                if(data == 'OK'){
+                    alert('성공');
+                    window.location.href ='/';
+                }
+            }
+        })
+    }
+
+</script>
+<body>
+    <div class="container">
+        <h2>신용카드 내역 추가</h2>
+        <form id="sincard" name="sincard">
+            가격 : <input type="text" name="price" id="price" value="${sinCard.price}"><br>
+            내역 : <input type="text" name="title" id="title" value="${sinCard.title}"><br>
+            비고 : <input type="text" name="contents" id="contents"><br>
+            카테고리 : 
+            <select name="category" id="category">
+                <option value="">선택</option>
+                <option th:each="onecategory : ${categoryList}" th:value="${onecategory.idx}" th:text="${onecategory.title}"></option>
+            </select>
+            <br>
+            서브 카테고리 : 
+            <select name="subcategory" id="subcategory">
+                <option value="">선택</option>
+                <option th:each="onesubcategory : ${subCategoryList}" th:value="${onesubcategory.idx}" th:text="${onesubcategory.title}"></option>
+            </select>
+        </form>
+        <button type="button" class="btn btn-primary" onclick="addingData()">추가하기</button>
+        <button type="button" class="btn btn-success" onclick="location.href='/'">뒤로</button>
+    </div>
+</body>

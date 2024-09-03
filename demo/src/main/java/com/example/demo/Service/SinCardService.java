@@ -44,4 +44,8 @@ public class SinCardService {
     public List<String> getMonthList() {
         return mapper.getMonthList();
     }
+
+    public SinCard getOneSinCard(int index){
+        return mapper.getOneSinCard(index);
+    }
 }
