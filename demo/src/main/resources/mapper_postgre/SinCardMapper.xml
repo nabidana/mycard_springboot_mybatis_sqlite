@@ -14,8 +14,17 @@
         on a.category_idx = b.idx
         left join subcategory c
         on a.subcategory_idx = c.idx
+        inner join carduser d
+        on a.carduser_idx = b.idx
         where 1=1
-        and card_stat = '0'
+        and a.card_stat = '0'
+        and a.inday 
+        	between to_char( 
+        		to_date(
+        			concat(beforemonth(d.cardreset_day),extract(day from current_date) ), 'yyyyMMdd'), 'yyyy-mm-dd') 
+        	and to_char( 
+        		to_date(
+        			concat(aftermonth(d.cardreset_day),extract(day from current_date) ), 'yyyyMMdd'), 'yyyy-mm-dd')
         order by idx desc
     </select>
 
@@ -23,7 +32,11 @@
         --coalesce : NVL
         select coalesce( sum(price), 0)
         from sincard
-        where card_stat = '0';
+        where card_stat = '0'
+        and carduser_idx = (
+            select idx from carduser where userid = #{userid}
+        )
+        ;
     </select>
 
     <insert id="insertSinCard" parameterType="SinCard">
@@ -49,10 +62,12 @@
             , #{contents}
             </if>
             <if test="category != null">
-            , (select idx from category where title = #{category})
+            , #{category}
+            --, (select idx from category where title = #{category})
             </if>
             <if test="subcategory != null">
-            , (select idx from category where title = #{subcategory})
+            , #{subcategory}
+            --, (select idx from category where title = #{subcategory})
             </if>
             , '0'
         )
@@ -91,4 +106,12 @@
         and card_stat = '0'
         and a.idx = #{idx}
     </select>
+
+    <select id="getResetDay" resultType="Integer">
+        select cardreset_day
+        from carduser
+        where 1=1
+        and userid = #{userid}
+    </select>
+
 </mapper>

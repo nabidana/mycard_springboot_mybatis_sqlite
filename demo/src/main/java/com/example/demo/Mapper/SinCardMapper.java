@@ -11,7 +11,7 @@ import com.example.demo.Domain.SinCard;
 public interface SinCardMapper {
     List<SinCard> selectSinCardLists(CommonSearch commonSearch);
 
-    int getTotalPrice();
+    int getTotalPrice(String userid);
 
     int insertSinCard(SinCard sinCard);
 
@@ -20,4 +20,6 @@ public interface SinCardMapper {
     List<String> getMonthList();
 
     SinCard getOneSinCard(int index);
+
+    int getResetDay(String userid);
 }

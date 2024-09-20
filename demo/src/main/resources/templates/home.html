@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LOGIN</title>
+    <script src="/static/js/jquery-3.7.1.min.js"></script>
+    <script src="/static/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="/static/css/bootstrap.css">
+</head>
+<script>
+    function enter(){
+        let userid = $("#userid").val();
+        if(userid == null || userid == '' || userid == undefined){
+            alert('입장명을 입력해주세요');
+            return;
+        }else{
+            window.location.href = '/index?userid=' + userid;
+        }
+    }
+</script>
+<body>
+    <div class="d-flex justify-content-center">
+        <h2>입장명 : <input type="text" name="userid" id="userid"></h2>
+    </div>
+    <div class="d-flex justify-content-center">
+        <button type="button" class="btn btn-outline-info" onclick="enter()">입장</button>
+    </div>
+</body>
+</html>

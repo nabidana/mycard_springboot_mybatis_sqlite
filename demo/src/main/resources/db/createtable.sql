@@ -1,17 +1,3 @@
---drop table category;
-create table category (
-	idx SERIAL not null,
-	title VARCHAR(50),
-	contents VARCHAR(100),
-	constraint category_pk primary key (idx)
-);
---drop table subcategory;
-create table subcategory (
-	idx SERIAL not null,
-	title VARCHAR(50),
-	contents VARCHAR(100),
-	constraint subcategory_pk primary key (idx)
-);
 --drop table carduser;
 create table carduser(
 	idx SERIAL not null,
@@ -20,6 +6,24 @@ create table carduser(
 	usertype VARCHAR(50),
 	cardreset_day VARCHAR(10),
 	constraint carduser_pk primary key (idx)
+);
+--drop table category;
+create table category (
+	idx SERIAL not null,
+	title VARCHAR(50),
+	contents VARCHAR(100),
+	carduser_idx INT,
+	constraint category_pk primary key (idx),
+	constraint category_fk_carduser foreign KEY(carduser_idx) references "carduser"(idx) on delete cascade on update cascade
+);
+--drop table subcategory;
+create table subcategory (
+	idx SERIAL not null,
+	title VARCHAR(50),
+	contents VARCHAR(100),
+	carduser_idx INT,
+	constraint subcategory_pk primary key (idx),
+	constraint subcategory_fk_carduser foreign KEY(carduser_idx) references "carduser"(idx) on delete cascade on update cascade
 );
 --drop table sincard;
 create table sincard(
@@ -53,3 +57,32 @@ create table bupcard(
 	constraint bupcard_fk_subcategory foreign KEY(subcategory_idx) references "subcategory"(idx) on delete cascade on update cascade,
 	constraint bupcard_fk_carduser foreign KEY(carduser_idx) references "carduser"(idx) on delete cascade on update cascade
 );
+
+create function beforemonth(resetday varchar) returns integer as $$
+	declare
+		mon_return int;
+	begin
+		select
+		case 
+			when extract(day from current_date) < resetday then extract(month from current_date) - 1
+			else extract(month from current_date)
+		end into mon_return;
+		return mon_return;
+	end;
+$$ language plpgsql;
+
+create function aftermonth(resetday varchar) returns integer as $$
+	declare
+		mon_return int;
+	begin
+		select
+		case 
+			when extract(day from current_date) < resetday then extract(month from current_date)
+			else extract(month from current_date) + 1
+		end into mon_return;
+		return mon_return;
+	end;
+$$ language plpgsql;
+
+insert into carduser(userid, cardreset_day) values( '크림' , '12' );
+insert into carduser(userid, cardreset_day) values( '파이', '23' );

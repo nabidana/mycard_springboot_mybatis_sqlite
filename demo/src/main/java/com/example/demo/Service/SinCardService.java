@@ -24,8 +24,8 @@ public class SinCardService {
         return mapper.selectSinCardLists(commonSearch);
     }
 
-    public int getTotalPrice() {
-        return mapper.getTotalPrice();
+    public int getTotalPrice(String userid) {
+        return mapper.getTotalPrice(userid);
     }
 
     public int addSinCard(SinCard sinCard) {
@@ -47,5 +47,9 @@ public class SinCardService {
 
     public SinCard getOneSinCard(int index){
         return mapper.getOneSinCard(index);
+    }
+
+    public int getResetDay(String userid) {
+        return mapper.getResetDay(userid);
     }
 }

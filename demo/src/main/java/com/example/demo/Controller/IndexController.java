@@ -13,6 +13,9 @@ import com.example.demo.Domain.SinCard;
 import com.example.demo.Service.CategoryService;
 import com.example.demo.Service.SinCardService;
 
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 public class IndexController {
@@ -23,16 +26,46 @@ public class IndexController {
     private CategoryService categoryService;
     
     @GetMapping("/")
-    public String index(Model model){
-        int totalprice = sinCardService.getTotalPrice();
+    public String home(Model model, HttpServletRequest request){
+        HttpSession session = request.getSession(false);
+        if( session != null ){
+            String userid = (String) session.getAttribute("userid");
+            if(userid.equals("크림") || userid.equals("파이")){
+                return "redirect:/index";
+            }
+        };
+        // int totalprice = sinCardService.getTotalPrice();
+        // List<String> monthlist = sinCardService.getMonthList();
+        // model.addAttribute("monthlist", monthlist);
+        // model.addAttribute("totalprice", totalprice);
+        return "home";
+    }
+
+    @GetMapping("/index")
+    public String index(Model model, HttpServletRequest request, @RequestParam(defaultValue = "", required = false) String userid){
+        System.out.println("userid : " + userid);
+        if("크림".equals(userid) || "파이".equals(userid)){
+            HttpSession session = request.getSession();
+            session.setAttribute("userid", userid);
+            return "redirect:/index";
+        }else{
+            HttpSession session = request.getSession(false);
+            if(session == null ){
+                return "redirect:/";
+            }
+            userid = (String) session.getAttribute("userid");
+        }
         List<String> monthlist = sinCardService.getMonthList();
+        int totalprice = sinCardService.getTotalPrice(userid);
+        int resetday = sinCardService.getResetDay(userid);
         model.addAttribute("monthlist", monthlist);
         model.addAttribute("totalprice", totalprice);
+        model.addAttribute("resetday", resetday);
         return "index";
     }
 
     @GetMapping("/addSincardData")
-    public String addSincardData(Model model){
+    public String addSincardData(Model model, HttpServletRequest request){
         List<Category> categoryList = categoryService.getList(null);
         List<Category> subCategoryList = categoryService.getSubList(null);
         model.addAttribute("categoryList", categoryList);
@@ -61,7 +94,7 @@ public class IndexController {
     }
 
     @GetMapping("/updateSincardData")
-    public String updateSincardData(Model model, @RequestParam String idx) throws Exception{
+    public String updateSincardData(Model model, @RequestParam String idx, HttpServletRequest request) throws Exception{
         try {
             int index = Integer.parseInt(idx);
             SinCard sinCard = sinCardService.getOneSinCard(index);
